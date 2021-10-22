@@ -22,13 +22,23 @@ contract CitizenBoundary  is Boundary {
     function __CitizenBoundary_init(
         EmployableRegistry _citizens,
         PurchasableRegistry _purchasables,
-        FundableRegistry _fundables
+        FundableRegistry _fundables,
+        TradableRegistry _tradables
     ) public initializer {
         __Context_init_unchained();
-        __Boundary_init(_citizens, _purchasables, _fundables);
+        __Boundary_init(_citizens, _purchasables, _fundables, _tradables);
     }
 
-    function checkTrade() {
+    function checkEmploy() { // means we can have jobs
+        // TODO: how do we do a check on expiration of an address we don't know?
+        return true;
+    }
+
+    function checkEarn() { // means we can receive UBI
+        return true;
+    }
+
+    function checkTrade() { // means we can trade with others
         return false;
     }
 }

@@ -12,13 +12,14 @@ This project contains the currency logic for `Cit1`
  
 | Currency      | Registry              | Boundary              | Functionality         |
 | ------------- | -------------         | --------              | ---------------------
-| Cits          |                       | CitizenBoundary       | Earn, Fund, Purchase  |
-| Govs          |                       |                       | Trade, Fund           |
-| UUSD          |                       |                       | Trade, Purchase       |
+| Cits          | EmployableRegistry    | CitizenBoundary       | Earn, Fund, Purchase  |
+| Govs          | FundableRegistry      |                       | Trade, Fund           |
+| UUSD          | PurchasableRegistry   |                       | Trade, Purchase       |
 
 #### Models
 
- - `abstract BoundedCoin` - enables restrictions on functionality of a coin. 
+ - `abstract BoundedCoin` - enables restrictions on functionality of a coin.
+   - `Cits` - usable by citizens (not Gov or Biz)
  - `interface Registrable` - the ability to sit in a registry
    - `abstract contract Registry` - abstract superclass for registering things.
  - `interface Boundable` - the ability to enforce functionality

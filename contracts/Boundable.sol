@@ -34,6 +34,7 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
     BoundableRegistry purchasables;
     BoundableRegistry fundables;
     BoundableRegistry citizens;
+    BoundableRegistry tradables;
 
     /**
      * @dev Constructor for determining allowed functionality
@@ -41,32 +42,50 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
     function __Boundary_init(
         BoundableRegistry _citizens,
         BoundableRegistry _purchasables,
-        BoundableRegistry _fundables
+        BoundableRegistry _fundables,
+        BoundableRegistry _tradables
     ) public initializer {
         __Context_init_unchained();
 
+        tradables = BoundableRegistry(_tradables);
         citizens = BoundableRegistry(_citizens);
         purchasables = BoundableRegistry(_purchasables);
         fundables = BoundableRegistry(_fundables);
     }
 
     // the "_source" does not matter, because the subclass determines which functionality to allow.
-    function checkTokenTransfer(address _dest) {
-        if (isFundable(_dest)) {
+    function checkTokenTransfer(address _dest) returns (bool) {
+        if (false) {
+            return false;
+        } else if (isFundable(_dest)) {
             return checkFund();
         } else if (isPurchasable(_dest)) {
             return checkPurchase();
-        } else if (isEmployable(_dest)){
-            // TODO: We need to figure out how monthly paychecks can get around this
-            // TODO: We're basically saying that citizens can't receive anything - is that right?
-            return checkEmployable();
-        } else {
+        } else if (isEarnable(_dest)) {
+            return checkEarn();
+        } else if (isEmployable(_dest)) {
+            return checkEmploy();
+        } else if (isTradeable(_dest)) {
             return checkTrade();
+        } else {
+            return false;
         }
     }
 
-    function isPurchasable(address dest) {
+    // does this make sense? Does it make sense to check the destination wallet for trade?
+    // Isn't that checking if the destination wallet is a Gov or a Biz?
+    function isTradeable(address _dest) {    // what does this even mean? Can the destination receive trades?
         return BoundableRegistry(purchasables).isRegistered(dest);
+        //        return PurchasableRegistry(purchasables).isRegistered(_dest);  // TODO: can we circular import?
+    }
+
+    function isEarnable(address _dest) {
+        return BoundableRegistry(citizens).isRegistered(_dest);
+        //        return PurchasableRegistry(purchasables).isRegistered(dest);  // TODO: can we circular import?
+    }
+
+    function isPurchasable(address _dest) {
+        return BoundableRegistry(purchasables).isRegistered(_dest);
         //        return PurchasableRegistry(purchasables).isRegistered(dest);  // TODO: can we circular import?
     }
 
@@ -84,12 +103,19 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
     function checkEmployable() {
         return false;
     }
+    // authorized to receive UBI?
+    function checkEmployable() {
+        return false;
+    }
+    // authorized to buy stuff?
     function checkPurchase() {
         return false;   // cit & biz
     }
+    // authorized to fund stuff?
     function checkFund() {
         return false;   // gov & cit
     }
+    // authorized to trade stuff?
     function checkTrade() {
         return false;   // gov & biz
     }
