@@ -3,24 +3,26 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
 
-contract Purchasable {
-    // a product that can be purchased
+import "./Registrable.sol";
+
+interface Fundable is Registrable {
+    // a project that can be funded
 }
 
-contract PurchasableRegistry {
+contract FundableRegistry {
 
     mapping(address => bool) public registered;
 
-    Purchasable public template;
+    Fundable public template;
 
     // constructor
     function __PurchaseFactory_init(
-        Purchasable _template
+        Fundable _template
     ) public {
         template = _template;
     }
 
-    function register() external {
+    function createOne() external {
         // TODO: checks if approved by authority
         address instance = ClonesUpgradeable.clone(
             address(template)
