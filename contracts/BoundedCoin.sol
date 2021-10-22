@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-import "./Boundables.sol";
+import "./Boundable.sol";
 
 contract BoundedCoin is Initializable, ContextUpgradeable, ERC20Upgradeable {
 

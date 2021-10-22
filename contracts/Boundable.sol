@@ -7,38 +7,22 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 // TODO: do we need to prevent circular imports?
+import "./Registrable.sol";
 
-// this represents a thing that can be bounded by a Boundary/BoundableRegistry
-interface Boundable {
-
+interface Boundable is Registrable {
+    // a thing that can be used as a Boundary
 }
 
-abstract contract BoundableRegistry {
-
-    mapping(address => bool) public registered;
-
-    Boundable _template;
+// a registry for things that can be Bounded (BoundedCoin/Fundable/Purchasable)
+abstract contract BoundableRegistry is Registry {
 
     // constructor
     function __BoundableRegistry_init(
         Boundable _template
     ) public {
-        template = _template;
+        __Registry_init(_template);
     }
 
-    function register() external {
-        // TODO: checks if approved by authority
-        address instance = ClonesUpgradeable.clone(
-            address(_template)
-        );
-
-        // set the address of our new implementation as verified by factory
-        registered[instance] = true;
-    }
-
-    function isRegistered(address _dest) public view returns (bool) {
-        return registered[_dest];
-    }
 }
 
 /**
@@ -96,8 +80,9 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
         //        return CitizenRegistry(citizens).isRegistered(_dest);  // TODO: can we circular import?
     }
 
+    // authorized for payroll?
     function checkEmployable() {
-        return false;   // authorized for payroll
+        return false;
     }
     function checkPurchase() {
         return false;   // cit & biz

@@ -4,10 +4,10 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "./Boundables.sol";
+import "./Boundable.sol";
+import "./Employable.sol";
 import "./Purchasable.sol";
 import "./Fundable.sol";
-import "./Employable.sol";
 import "./BoundedCoin.sol";
 
 /**
@@ -34,7 +34,7 @@ contract CitizenBoundary  is Boundary {
 }
 
 /**
- * @title Cit1Currency
+ * @title Cits
  * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.
  */
 contract Cits is BoundedCoin {
@@ -45,10 +45,10 @@ contract Cits is BoundedCoin {
     function __Cits_init(
         CitizenBoundary _boundary       // this determines what a Citizen can do.
     ) public initializer {
-        __Context_init_unchained();
+//        __Context_init_unchained(); // is the superclass enough for this?
         __ERC20_init_unchained("Citizen Coin", "Cits");
         __BoundedCoin_init(_boundary);
-        _mint(_msgSender(), 10000 * (10**uint256(decimals())));
+        _mint(_msgSender(), 10000 * (10**uint256(decimals()))); // TODO: we need to "mint" a Cits, from a UUSD
     }
 
 }
