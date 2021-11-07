@@ -54,7 +54,7 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
     }
 
     // the "_source" does not matter, because the subclass determines which functionality to allow.
-    function checkTokenTransfer(address _dest) returns (bool) {
+    function checkTokenTransfer(address _dest) public returns (bool) {
         if (false) {
             return false;
         } else if (isFundable(_dest)) {
@@ -72,51 +72,67 @@ abstract contract Boundary is Initializable, ContextUpgradeable {
         }
     }
 
+     function checkEmploy() public returns (bool) {
+         return false;
+     }
+
+     function checkTrade() public returns (bool) {
+         return false;
+     }
+
+     function checkEarn() public returns (bool) {
+         return false;
+     }
+
+     function checkPurchase() public returns (bool) {
+         return false;
+     }
+
     // does this make sense? Does it make sense to check the destination wallet for trade?
     // Isn't that checking if the destination wallet is a Gov or a Biz?
-    function isTradeable(address _dest) {    // what does this even mean? Can the destination receive trades?
-        return BoundableRegistry(purchasables).isRegistered(dest);
+    function isTradeable(address _dest) public {    // what does this even mean? Can the destination receive trades?
+        return BoundableRegistry(purchasables).isRegistered(_dest);
         //        return PurchasableRegistry(purchasables).isRegistered(_dest);  // TODO: can we circular import?
     }
 
-    function isEarnable(address _dest) {
+    function isEarnable(address _dest) public {
         return BoundableRegistry(citizens).isRegistered(_dest);
         //        return PurchasableRegistry(purchasables).isRegistered(dest);  // TODO: can we circular import?
     }
 
-    function isPurchasable(address _dest) {
+    function isPurchasable(address _dest) public {
         return BoundableRegistry(purchasables).isRegistered(_dest);
         //        return PurchasableRegistry(purchasables).isRegistered(dest);  // TODO: can we circular import?
     }
 
-    function isFundable(address _dest) {
+    function isFundable(address _dest) public {
         return BoundableRegistry(fundables).isRegistered(_dest);
         //        return FundableRegistry(fundables).isRegistered(_dest);  // TODO: can we circular import?
     }
 
-    function isEmployable(address _dest) {
+    function isEmployable(address _dest) public {
         return BoundableRegistry(citizens).isRegistered(_dest);
         //        return CitizenRegistry(citizens).isRegistered(_dest);  // TODO: can we circular import?
     }
 
     // authorized for payroll?
-    function checkEmployable() {
+    function checkEmployable() public {
         return false;
     }
     // authorized to receive UBI?
-    function checkEmployable() {
+    function checkEmployable() public {
         return false;
     }
     // authorized to buy stuff?
-    function checkPurchase() {
+    function checkPurchase() public {
         return false;   // cit & biz
     }
     // authorized to fund stuff?
-    function checkFund() {
+    function checkFund() public {
         return false;   // gov & cit
     }
     // authorized to trade stuff?
-    function checkTrade() {
+    function checkTrade() public {
         return false;   // gov & biz
     }
 }

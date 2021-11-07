@@ -29,16 +29,16 @@ contract CitizenBoundary  is Boundary {
         __Boundary_init(_citizens, _purchasables, _fundables, _tradables);
     }
 
-    function checkEmploy() { // means we can have jobs
+    function checkEmploy() public { // means we can have jobs
         // TODO: how do we do a check on expiration of an address we don't know?
         return true;
     }
 
-    function checkEarn() { // means we can receive UBI
+    function checkEarn() public { // means we can receive UBI
         return true;
     }
 
-    function checkTrade() { // means we can trade with others
+    function checkTrade() public { // means we can trade with others
         return false;
     }
 }

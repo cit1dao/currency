@@ -33,7 +33,7 @@ abstract contract Registry {
     }
 
     // opportunity to let the subclass enforce any custom enrollment rules.
-    function _exec_registration(address registration) {
+    function _exec_registration(address registration) public {
 //        assert(false, "subclass must implement this");
     }
 
